@@ -39,38 +39,67 @@ npm install
 
 ## Configuration
 
-### For TypingMind
+### For TypingMind.com
 
-1. In TypingMind, go to **Settings** → **MCP Servers**
-2. Click **"Add Server"**
-3. Configure using one of these options:
+#### Setup Instructions
 
-   **Using npx (no installation required):**
+1. Go to [TypingMind.com](https://www.typingmind.com/)
+2. Click on **Settings** → **MCP Servers**
+3. In the MCP configuration editor, add the AnythingLLM server:
+
    ```json
    {
-     "name": "AnythingLLM",
-     "command": "npx",
-     "args": ["-y", "anythingllm-mcp-server"]
+     "anythingllm": {
+       "command": "npx",
+       "args": ["-y", "anythingllm-mcp-server"]
+     }
    }
    ```
 
-   **Using global installation:**
+   If you already have other MCP servers configured, add it to your existing configuration:
    ```json
    {
-     "name": "AnythingLLM",
-     "command": "anythingllm-mcp-server",
-     "args": []
+     "mcpServers": {
+       "memory": {
+         "command": "npx",
+         "args": ["-y", "@modelcontextprotocol/server-memory"]
+       },
+       "anythingllm": {
+         "command": "npx",
+         "args": ["-y", "anythingllm-mcp-server"]
+       }
+     }
    }
    ```
 
-   **Using local installation:**
-   ```json
-   {
-     "name": "AnythingLLM",
-     "command": "node",
-     "args": ["/path/to/anythingllm-mcp-server/src/index.js"]
-   }
+4. Click **Save** - TypingMind will restart the MCP servers
+5. Look for the "Connected" status
+
+#### First Time Usage
+
+After the server connects, initialize it with your AnythingLLM credentials:
+
+1. In the chat, type:
    ```
+   Use the initialize_anythingllm tool with apiKey: "your-api-key" and baseUrl: "http://localhost:3001"
+   ```
+
+2. Replace:
+   - `"your-api-key"` with your AnythingLLM API key (get it from AnythingLLM → Settings → API Keys)
+   - `"http://localhost:3001"` with your AnythingLLM instance URL
+
+3. You'll see: "AnythingLLM client initialized successfully"
+
+#### Example Commands
+
+After initialization, use natural language to interact with AnythingLLM:
+
+- "List all my workspaces"
+- "Create a new workspace called 'Project Documentation'"
+- "Chat with the 'research' workspace about the latest findings"
+- "Show me all documents in the 'knowledge-base' workspace"
+
+TypingMind will automatically use the appropriate AnythingLLM tools.
 
 ### For Claude Desktop
 
