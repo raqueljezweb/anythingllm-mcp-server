@@ -1,6 +1,6 @@
 {
   "name": "anythingllm-mcp-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "MCP server for AnythingLLM integration with TypingMind and other MCP-compatible clients",
   "main": "src/index.js",
   "type": "module",
