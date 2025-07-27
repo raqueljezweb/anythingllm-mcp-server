@@ -53,9 +53,9 @@ npm install
       "anythingllm": {
         "command": "npx",
         "args": ["-y", "anythingllm-mcp-server@1.0.3"]
-      }
-    }
-  }
+       }
+     }
+   }
    ```
 
 4. Click **Save** - TypingMind will restart the MCP servers
