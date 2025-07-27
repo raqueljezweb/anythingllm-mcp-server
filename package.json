@@ -1,0 +1,39 @@
+{
+  "name": "anythingllm-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for AnythingLLM integration with TypingMind and other MCP-compatible clients",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "anythingllm-mcp-server": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "anythingllm",
+    "typingmind",
+    "ai",
+    "llm",
+    "rag"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raqueljezweb/anythingllm-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/raqueljezweb/anythingllm-mcp-server/issues"
+  },
+  "homepage": "https://github.com/raqueljezweb/anythingllm-mcp-server#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "node-fetch": "^3.3.2"
+  }
+}
