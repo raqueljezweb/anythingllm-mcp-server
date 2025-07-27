@@ -2,6 +2,10 @@
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { 
+  CallToolRequestSchema, 
+  ListToolsRequestSchema 
+} from '@modelcontextprotocol/sdk/types.js';
 import { AnythingLLMClient } from './client.js';
 
 const server = new Server(
@@ -19,31 +23,32 @@ const server = new Server(
 );
 
 let client = null;
+let config = {
+  apiKey: process.env.ANYTHINGLLM_API_KEY || null,
+  baseUrl: process.env.ANYTHINGLLM_BASE_URL || 'http://localhost:3001'
+};
 
-server.setRequestHandler('initialize', async (request) => {
-  const { apiKey, baseUrl } = request.params;
-  
-  if (!apiKey || !baseUrl) {
-    throw new Error('API key and base URL are required');
-  }
-  
-  client = new AnythingLLMClient(baseUrl, apiKey);
-  
-  return {
-    protocolVersion: '2024-11-05',
-    capabilities: {
-      tools: {}
-    },
-    serverInfo: {
-      name: 'anythingllm-mcp-server',
-      version: '1.0.0'
-    }
-  };
-});
-
-server.setRequestHandler('tools/list', async () => {
+server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
+      {
+        name: 'initialize_anythingllm',
+        description: 'Initialize the AnythingLLM client with API credentials',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            apiKey: {
+              type: 'string',
+              description: 'Your AnythingLLM API key'
+            },
+            baseUrl: {
+              type: 'string',
+              description: 'AnythingLLM base URL (default: http://localhost:3001)'
+            }
+          },
+          required: ['apiKey']
+        }
+      },
       {
         name: 'list_workspaces',
         description: 'List all available workspaces in AnythingLLM',
@@ -194,54 +199,92 @@ server.setRequestHandler('tools/list', async () => {
   };
 });
 
-server.setRequestHandler('tools/call', async (request) => {
-  if (!client) {
-    throw new Error('Client not initialized. Please initialize with API key and base URL.');
-  }
-
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   try {
     let result;
     
     switch (name) {
+      case 'initialize_anythingllm':
+        config.apiKey = args.apiKey;
+        if (args.baseUrl) {
+          config.baseUrl = args.baseUrl;
+        }
+        client = new AnythingLLMClient(config.baseUrl, config.apiKey);
+        result = { 
+          message: 'AnythingLLM client initialized successfully',
+          baseUrl: config.baseUrl 
+        };
+        break;
+        
       case 'list_workspaces':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.listWorkspaces();
         break;
         
       case 'get_workspace':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.getWorkspace(args.slug);
         break;
         
       case 'create_workspace':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.createWorkspace(args.name);
         break;
         
       case 'update_workspace':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.updateWorkspace(args.slug, args.updates);
         break;
         
       case 'delete_workspace':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.deleteWorkspace(args.slug);
         break;
         
       case 'chat_with_workspace':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.chatWithWorkspace(args.slug, args.message, args.mode || 'chat');
         break;
         
       case 'list_documents':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.listDocuments(args.slug);
         break;
         
       case 'delete_document':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.deleteDocument(args.slug, args.documentId);
         break;
         
       case 'get_system_settings':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.getSystemSettings();
         break;
         
       case 'update_system_settings':
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
         result = await client.updateSystemSettings(args.settings);
         break;
         

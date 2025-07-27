@@ -50,7 +50,7 @@ npm install
    {
      "name": "AnythingLLM",
      "command": "npx",
-     "args": ["anythingllm-mcp-server"]
+     "args": ["-y", "anythingllm-mcp-server"]
    }
    ```
 
@@ -92,19 +92,26 @@ Add to your Claude Desktop configuration file:
 
 ## Initialization
 
-When first using the server, you'll need to initialize it with your AnythingLLM credentials:
+When first using the server in your MCP client, you'll need to initialize it with your AnythingLLM credentials by calling the `initialize_anythingllm` tool:
 
-```json
-{
-  "apiKey": "your-anythingllm-api-key",
-  "baseUrl": "http://localhost:3001"
-}
+```
+Use the initialize_anythingllm tool with apiKey: "your-api-key" and baseUrl: "http://localhost:3001"
 ```
 
 - **apiKey**: Get this from your AnythingLLM instance at `/settings/api-keys`
 - **baseUrl**: Your AnythingLLM instance URL (default: `http://localhost:3001`)
 
+You can also set these as environment variables:
+- `ANYTHINGLLM_API_KEY`: Your API key
+- `ANYTHINGLLM_BASE_URL`: Your instance URL
+
 ## Available Tools
+
+### Initialization
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `initialize_anythingllm` | Initialize the AnythingLLM client with API credentials | `apiKey` (string), `baseUrl` (optional string) |
 
 ### Workspace Management
 
