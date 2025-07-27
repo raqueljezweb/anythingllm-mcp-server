@@ -8,7 +8,9 @@
     "anythingllm-mcp-server": "./src/index.js"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "release": "./scripts/publish.sh",
+    "release:quick": "./scripts/quick-publish.sh"
   },
   "keywords": [
     "mcp",
