@@ -7,12 +7,14 @@ import {
   ListToolsRequestSchema 
 } from '@modelcontextprotocol/sdk/types.js';
 import { AnythingLLMClient } from './client.js';
+import { additionalTools } from './additional-tools.js';
+import { handleAdditionalTools } from './additional-handlers.js';
 
 const server = new Server(
   {
     name: 'anythingllm-mcp-server',
     vendor: 'anythingllm',
-    version: '1.0.0',
+    version: '2.0.0',
     description: 'MCP server for AnythingLLM integration'
   },
   {
@@ -194,7 +196,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ['settings']
         }
-      }
+      },
+      ...additionalTools
     ]
   };
 });
@@ -289,7 +292,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         break;
         
       default:
-        throw new Error(`Unknown tool: ${name}`);
+        // Try additional tools
+        if (!client) {
+          throw new Error('AnythingLLM client not initialized. Please run initialize_anythingllm first.');
+        }
+        result = await handleAdditionalTools(name, args, client);
+        if (result === null) {
+          throw new Error(`Unknown tool: ${name}`);
+        }
     }
     
     return {

@@ -4,12 +4,17 @@ An MCP (Model Context Protocol) server that enables seamless integration between
 
 ## Features
 
-- 🚀 **Full AnythingLLM API Integration**: Access all major AnythingLLM features through MCP
-- 💬 **Workspace Management**: Create, update, delete, and list workspaces
-- 🤖 **Chat Integration**: Send messages to workspaces and receive AI responses
-- 📄 **Document Management**: List and delete documents in workspaces
-- ⚙️ **System Settings**: View and update AnythingLLM system configuration
-- 🔐 **Secure Authentication**: API key-based authentication
+- 🚀 **Complete AnythingLLM API Integration**: Access all AnythingLLM features through MCP
+- 💬 **Workspace Management**: Create, update, delete, list workspaces and manage their settings
+- 🤖 **Chat Integration**: Send messages, manage chat history, and stream responses
+- 📄 **Document Management**: Upload, list, delete documents, process URLs, and manage vectors
+- 🔍 **Embedding & Search**: Embed text/webpages and search within workspaces
+- 👥 **User Management**: Create, update, delete users and manage permissions
+- 🔑 **API Key Management**: Programmatically manage API keys
+- ⚙️ **System Administration**: Configure LLM providers, vector databases, and system settings
+- 🤖 **Agent Support**: Create and manage AI agents with custom prompts and tools
+- 📊 **System Monitoring**: Access system information and statistics
+- 🔐 **Secure Authentication**: API key-based authentication with environment variable support
 
 ## Prerequisites
 
@@ -151,12 +156,16 @@ You can also set these as environment variables:
 | `create_workspace` | Create a new workspace | `name` (string) |
 | `update_workspace` | Update workspace settings | `slug` (string), `updates` (object) |
 | `delete_workspace` | Remove a workspace | `slug` (string) |
+| `get_workspace_settings` | Get settings for a specific workspace | `slug` (string) |
+| `update_workspace_settings` | Update workspace-specific settings | `slug` (string), `settings` (object) |
 
 ### Chat Operations
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
 | `chat_with_workspace` | Send messages to a workspace | `slug` (string), `message` (string), `mode` (optional: "chat" or "query") |
+| `get_chat_history` | Get chat history for a workspace | `slug` (string), `limit` (optional number) |
+| `clear_chat_history` | Clear all chat history for a workspace | `slug` (string) |
 
 ### Document Management
 
@@ -164,6 +173,33 @@ You can also set these as environment variables:
 |------|-------------|------------|
 | `list_documents` | View all documents in a workspace | `slug` (string) |
 | `delete_document` | Remove a document from a workspace | `slug` (string), `documentId` (string) |
+| `process_document_url` | Process a document from a URL | `slug` (string), `url` (string) |
+| `get_document_vectors` | Get vector embeddings for a document | `slug` (string), `documentId` (string) |
+
+### Embedding & Search
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `embed_text` | Embed text directly into a workspace | `slug` (string), `texts` (array of strings) |
+| `embed_webpage` | Embed a webpage into a workspace | `slug` (string), `url` (string) |
+| `search_workspace` | Search within a workspace | `slug` (string), `query` (string), `limit` (optional number) |
+
+### User Management
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `list_users` | List all users in the system | None |
+| `create_user` | Create a new user | `username` (string), `password` (string), `role` (optional string) |
+| `update_user` | Update an existing user | `userId` (string), `updates` (object) |
+| `delete_user` | Delete a user | `userId` (string) |
+
+### API Key Management
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `list_api_keys` | List all API keys | None |
+| `create_api_key` | Create a new API key | `name` (string) |
+| `delete_api_key` | Delete an API key | `keyId` (string) |
 
 ### System Administration
 
@@ -171,6 +207,32 @@ You can also set these as environment variables:
 |------|-------------|------------|
 | `get_system_settings` | View system configuration | None |
 | `update_system_settings` | Modify system settings | `settings` (object) |
+| `get_system_info` | Get general system information | None |
+| `get_system_stats` | Get system statistics | None |
+
+### LLM Provider Management
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `list_llm_providers` | List available LLM providers | None |
+| `update_llm_provider` | Update LLM provider configuration | `provider` (string), `apiKey` (optional string), `model` (optional string) |
+
+### Vector Database Management
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `get_vector_database_info` | Get vector database configuration | None |
+| `update_vector_database` | Update vector database configuration | `provider` (string), `config` (object) |
+
+### Agent Management
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `list_agents` | List all available agents | None |
+| `create_agent` | Create a new agent | `name` (string), `systemPrompt` (optional string), `tools` (optional array) |
+| `update_agent` | Update an existing agent | `agentId` (string), `updates` (object) |
+| `delete_agent` | Delete an agent | `agentId` (string) |
+| `invoke_agent` | Invoke an agent with input | `agentId` (string), `input` (string) |
 
 ## Usage Examples
 
