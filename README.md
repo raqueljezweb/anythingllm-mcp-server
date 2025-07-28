@@ -57,7 +57,7 @@ npm install
     "mcpServers": {
       "anythingllm": {
         "command": "npx",
-        "args": ["-y", "anythingllm-mcp-server@1.0.3"]
+        "args": ["-y", "anythingllm-mcp-server@2.0.0"]
        }
      }
    }
