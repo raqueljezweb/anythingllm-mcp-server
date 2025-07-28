@@ -54,24 +54,10 @@ npm install
 
    ```json
    {
-     "anythingllm": {
-       "command": "npx",
-       "args": ["-y", "anythingllm-mcp-server"]
-     }
-   }
-   ```
-
-   If you already have other MCP servers configured, add it to your existing configuration:
-   ```json
-   {
-     "mcpServers": {
-       "memory": {
-         "command": "npx",
-         "args": ["-y", "@modelcontextprotocol/server-memory"]
-       },
-       "anythingllm": {
-         "command": "npx",
-         "args": ["-y", "anythingllm-mcp-server"]
+    "mcpServers": {
+      "anythingllm": {
+        "command": "npx",
+        "args": ["-y", "anythingllm-mcp-server@1.0.3"]
        }
      }
    }
@@ -118,7 +104,7 @@ Add to your Claude Desktop configuration file:
   "mcpServers": {
     "anythingllm": {
       "command": "npx",
-      "args": ["anythingllm-mcp-server"]
+      "args": ["-y", "anythingllm-mcp-server@1.0.3"]
     }
   }
 }
